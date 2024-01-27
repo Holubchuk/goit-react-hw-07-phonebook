@@ -1,16 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../redux/contacts/ContactsSlice';
+import { addContacts } from '../../redux/contacts/operations';
 import css from './AddContactForm.module.css';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
+import { selectContacts } from '../../redux/contacts/ContactsSelectors';
 
 export const AddContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(store => store.contacts.contacts);
+  const contacts = useSelector(selectContacts);
 
   const [form, setForm] = useState({
     name: '',
-    number: '',
+    phone: '',
   });
 
   const handleFormChange = event => {
@@ -26,7 +27,7 @@ export const AddContactForm = () => {
 
     const formData = {
       name: form.name.toLowerCase(),
-      number: form.number,
+      phone: form.number,
     };
 
     const hasDuplicates = contacts.some(
@@ -41,7 +42,7 @@ export const AddContactForm = () => {
       id: nanoid(),
     };
 
-    dispatch(addContact(finalContacts));
+    dispatch(addContacts(finalContacts));
     setForm('');
   };
 
